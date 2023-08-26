@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "mongodb"
     // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -15,14 +15,14 @@ datasource db {
 }
 
 model Example {
-    id        String   @id @default(cuid())
+    id        String   @id @default(cuid()) @map("_id") // This is necessary for MongoDB
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
+    id                String  @id @default(cuid()) @map("_id") // This is necessary for MongoDB
     userId            String
     type              String
     provider          String
@@ -40,7 +40,7 @@ model Account {
 }
 
 model Session {
-    id           String   @id @default(cuid())
+    id           String   @id @default(cuid()) @map("_id") // This is necessary for MongoDB
     sessionToken String   @unique
     userId       String
     expires      DateTime
@@ -48,7 +48,7 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String    @id @default(cuid()) @map("_id") // This is necessary for MongoDB
     name          String?
     email         String?   @unique
     emailVerified DateTime?
@@ -59,7 +59,7 @@ model User {
 
 model VerificationToken {
     identifier String
-    token      String   @unique
+    token      String   @id @map("_id")
     expires    DateTime
 
     @@unique([identifier, token])
