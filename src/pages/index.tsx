@@ -1,8 +1,17 @@
 import styles from "./index.module.css";
 import Head from "next/head";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [time, setTime] = useState<Date | null>(null);
+  useEffect(() => {
+/* eslint-disable */
+      fetch('/api/time')
+      .then(res => res.json())
+      .then(json => setTime(new Date(json.time)));
+/* eslint-enable */
+  }, []);
   return (
     <>
       <Head>
@@ -14,6 +23,9 @@ export default function Home() {
         <div className={styles.container}>
           <h1 className={styles.title}>
             Create <span className={styles.pinkSpan}>T3</span> App
+          </h1>
+          <h1 className={styles.title}>
+            {time && `The time is ${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`}
           </h1>
           <div className={styles.cardRow}>
             <Link
