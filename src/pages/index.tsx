@@ -1,4 +1,3 @@
-import { signIn, signOut, useSession } from "next-auth/react";
 import styles from "./index.module.css";
 import Head from "next/head";
 import Link from "next/link";
@@ -52,30 +51,8 @@ export default function Home() {
               </div>
             </Link>
           </div>
-          <div className={styles.showcaseContainer}>
-            <AuthShowcase />
-          </div>
         </div>
       </main>
     </>
-  );
-}
-
-function AuthShowcase() {
-  const { data: sessionData } = useSession();
-
-
-  return (
-    <div className={styles.authContainer}>
-      <p className={styles.showcaseText}>
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-      </p>
-      <button
-        className={styles.loginButton}
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
   );
 }
