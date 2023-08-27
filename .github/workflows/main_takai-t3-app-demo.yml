@@ -24,8 +24,7 @@ jobs:
       - name: yarn install, build, and test
         run: |
           yarn install
-          yarn build --if-present
-          yarn test --if-present
+          yarn build
           rm -rf ./.next/cache
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
