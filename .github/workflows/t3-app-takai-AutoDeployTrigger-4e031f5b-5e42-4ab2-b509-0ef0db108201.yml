@@ -37,6 +37,11 @@ jobs:
           resourceGroup: takai-test
           imageToBuild: acrtakai.azurecr.io/t3-app-takai:${{ github.sha }}
           dockerfilePath: Dockerfile
-
-     
-
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          VERCEL_URL: ${{ secrets.VERCEL_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          DISCORD_CLIENT_ID: ""
+          DISCORD_CLIENT_SECRET: ""
+          GITHUB_CLIENT_ID: ${{ secrets.NEXTAUTH_GITHUB_CLIENT_ID }}
+          GITHUB_CLIENT_SECRET: ${{ secrets.NEXTAUTH_GITHUB_CLIENT_SECRET }}
