@@ -1,0 +1,42 @@
+name: Trigger auto deployment for t3-app-takai
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/t3-app-takai-AutoDeployTrigger-4e031f5b-5e42-4ab2-b509-0ef0db108201.yml'
+
+  # Allow mannually trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.T3APPTAKAI_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: acrtakai.azurecr.io
+          registryUsername: ${{ secrets.T3APPTAKAI_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.T3APPTAKAI_REGISTRY_PASSWORD }}
+          containerAppName: t3-app-takai
+          resourceGroup: takai-test
+          imageToBuild: acrtakai.azurecr.io/t3-app-takai:${{ github.sha }}
+          dockerfilePath: Dockerfile
+
+     
+
