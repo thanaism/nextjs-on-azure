@@ -25,7 +25,11 @@ COPY . .
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
-ENV NEXT_TELEMETRY_DISABLED 1
+# ENV NEXT_TELEMETRY_DISABLED 1
+
+# In the 'deps' stage of our multi-stage Docker build process, the Prisma schema is not copied.
+# Consequently, even though prisma generate is included in the postinstall of package.json, the Prisma client isn't generated. 
+RUN yarn postinstall
 
 RUN yarn build
 
